@@ -77,11 +77,12 @@ Requirements: CUDA toolkit (`nvcc`), CMake 3.13+.
 
 ## Polyformal ports
 
-| Port | Status | Path |
-|---|---|---|
-| **C++ / CUDA** | ✅ reference | `src/flx_cuda.cu` |
-| **Python (CPU fallback)** | ✅ reference | `bindings/python/flx_cuda.py` |
-| **Rust** | 🔮 future | `bindings/rust/` |
+| Port | Status | Path | Tests |
+|---|---|---|---|
+| **C++ / CUDA** | ✅ reference | `src/flx_cuda.cu` | `tests/test_flx_cuda.cpp` |
+| **C++ / CPU** | ✅ reference | `src/flx_cuda_cpu.hpp` | `tests/test_flx_cuda_cpu.cpp` (5/5 ✓) |
+| **Python (CPU fallback)** | ✅ reference | `bindings/python/flx_cuda.py` | `bindings/python/tests/test_flx_cuda.py` (4/4 ✓) |
+| **Rust** | ✅ reference | `bindings/rust/src/lib.rs` | `bindings/rust/tests/test_flx_cuda.rs` (7/7 ✓) |
 
 Same Quilt semantics across all ports. The cell-graph projection
 (`OpCell`, priority buckets, 5+1 opcodes) is invariant.
@@ -107,16 +108,20 @@ This is a **first-cut production repo**. What works:
 - Init / free / submit / dispatch / complete / drain / counts / tick
 - Priority buckets from -128 to 127
 - Linear-capacity allocation across buckets
-- Polyformal Python port with CPU fallback
+- Polyformal C++/CPU, C++/CUDA, Python, and Rust ports
+- 16 tests passing across all ports
+- Witness chain in every port
+- Benchmark suite (see `BENCHMARKS.md`)
 
 What's not here yet:
 - Async submit/complete (currently synchronous)
 - Multi-GPU dispatch
 - Persistent kernel mode (uses launch-per-call currently)
 - WASM/WebGPU port for browser
-- Benchmarking suite vs MCPMempool CPU scheduler
 
 These are tracked in the issue tracker.
+
+See `BENCHMARKS.md` for cross-language performance numbers.
 
 ## License
 
